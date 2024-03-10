@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Triple amenaza</title>
+    <link rel="icon" type="image/png" href="./images/mini.png" />
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types/prop-types.js"></script>
+    <style>
+      body::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      body::-webkit-scrollbar-track {
+        background: rgba(235, 150, 28); /* color of the tracking area */
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background-color: darkred; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid rgba(235, 150, 28); /* creates padding around scroll thumb */
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      document.body.style.cursor = 'url(images/basket.png), auto'
+      document.body.style.margin = 0
+      document.body.style.padding = 0
+
+      const spinner = {
+        border: '4px solid rgba(0, 0, 0, 0.1)',
+        width: '120px',
+        height: '120px',
+        borderRadius: '50%',
+        borderLeftColor: 'rgb(255, 17, 0)',
+        animation: 'spin 1s ease infinite',
+        display: 'block',
+        padding: '20px',
+        marginTop: '100px',
+      }
+
+      const HoverButton = () => {
+        const [isHovered, setIsHovered] = React.useState(false)
+
+        const baseStyle = {
+          cursor: 'url("images/mini.png"), auto',
+          backgroundColor: 'rgba(100, 30, 22)',
+          color: 'rgba(213, 216, 220)',
+          padding: '10px 20px',
+          border: 'none',
+          borderRadius: '20px',
+          fontSize: '1.5em',
+          fontWeight: 'bold',
+        }
+
+        return (
+          <button
+            style={baseStyle}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            Actualizar
+          </button>
+        )
+      }
+
+      const Header = () => {
+        const styles = {
+          padding: '20px 25px',
+          backgroundColor: 'darkred',
+          fontSize: '30px',
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          color: 'yellow',
+          textShadow: '0 0 10px orange, 0 0 20px red',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          position: 'fixed',
+          top: 0,
+          width: '100%',
+        }
+        return <header style={styles}>Alley-Oop Al Día</header>
+      }
+
+      const Footer = () => {
+        const styles = {
+          padding: '20px 25px',
+          backgroundColor: 'darkred',
+          fontSize: '14px',
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          color: 'yellow',
+          textShadow: '0 0 10px orange, 0 0 20px red',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+        }
+        return (
+          <footer style={styles}>
+            Copyright 2024 UVG® - By Sergio Orellana
+          </footer>
+        )
+      }
+
+      const Post = ({
+        title,
+        body,
+        home_team,
+        away_team,
+        home_score,
+        away_score,
+        image_url,
+      }) => {
+        const containerStyles = {
+          background: 'rgba(235, 150, 28)',
+          color: 'rgba(40, 55, 71)',
+          fontFamily: 'sans-serif',
+          textAlign: 'center',
+          borderRadius: '20px',
+          padding: '20px',
+          margin: '10px',
+          marginTop: '60px',
+          marginBottom: '60px',
+          width: '60%',
+        }
+
+        const scoreStyles = {
+          background: 'black',
+          display: 'inline-block',
+          padding: '10px 20px',
+          margin: '0 10px',
+          fontSize: '2em',
+          fontWeight: 'bold',
+          color: 'yellow',
+        }
+
+        const teamNameStyles = {
+          fontSize: '1.5em',
+        }
+
+        const imageStyles = {
+          borderRadius: '10px',
+          width: '100%',
+          margin: '10px 0',
+        }
+
+        const marcador = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: '20px 0',
+        }
+
+        return (
+          <div style={containerStyles}>
+            <h1>{title}</h1>
+            <p>{body}</p>
+            <div style={marcador}>
+              <span style={teamNameStyles}>{home_team}</span>
+              <span style={scoreStyles}>{home_score}</span>
+              <span style={{ fontSize: '1.5em' }}>vs</span>
+              <span style={scoreStyles}>{away_score}</span>
+              <span style={teamNameStyles}>{away_team}</span>
+            </div>
+            <div style={imageStyles}>
+              <img
+                src={image_url}
+                alt={title}
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
+            </div>
+            <HoverButton />
+          </div>
+        )
+      }
+
+      Post.propTypes = {
+        title: PropTypes.string.isRequired,
+        body: PropTypes.string.isRequired,
+        home_team: PropTypes.string.isRequired,
+        away_team: PropTypes.string.isRequired,
+        home_score: PropTypes.number.isRequired,
+        away_score: PropTypes.number.isRequired,
+        image_url: PropTypes.string.isRequired,
+      }
+
+      const EmptyState = () => {
+        const styles = {
+          textAlign: 'center',
+          marginTop: '100px',
+          marginBottom: '100px',
+          color: 'rgba(40, 55, 71)',
+          borderRadius: '20px',
+          backgroundColor: 'rgba(235, 150, 28)',
+          width: '60%',
+          padding: '20px',
+          fontFamily: 'Times New Roman, sans-serif',
+          fontSize: '1.5em',
+        }
+        const imageStyles = {
+          borderRadius: '10px',
+          width: '100%',
+          margin: '10px 0',
+        }
+
+        return (
+          <div style={styles}>
+            <h2>No hay posts para mostrar</h2>
+            <p>
+              Parece que no hay contenido en este momento. ¡Intenta más tarde!
+            </p>
+            <img
+              src="./images/NBA.jpg"
+              alt="No hay información"
+              style={imageStyles}
+            ></img>
+          </div>
+        )
+      }
+
+      const Posts = () => {
+        const styles = {
+          listStyle: 'none',
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }
+
+        const [posts, setPosts] = React.useState([])
+        const [isLoading, setIsLoading] = React.useState(true)
+
+        const getPosts = async () => {
+          setIsLoading(true)
+          try {
+            const apiResponse = await fetch(
+              'https://api.tiburoncin.lat/21122/posts'
+            )
+
+            if (!apiResponse.ok) {
+              throw new Error(
+                `API call failed with status: ${apiResponse.status}`
+              )
+            }
+
+            const jsonPosts = await apiResponse.json()
+
+            if (!Array.isArray(jsonPosts)) {
+              throw new Error(
+                'Data format is incorrect, expected an array of posts'
+              )
+            }
+
+            const formattedPosts = jsonPosts.map(
+              ({
+                title,
+                content,
+                home_team,
+                away_team,
+                home_score,
+                away_score,
+                image_url,
+              }) => ({
+                title,
+                body: content,
+                home_team,
+                away_team,
+                home_score,
+                away_score,
+                image_url,
+              })
+            )
+            setPosts(formattedPosts)
+          } catch (error) {
+            console.error('Failed to fetch posts:', error)
+          }
+          setIsLoading(false)
+        }
+
+        React.useEffect(() => {
+          getPosts()
+        }, [])
+
+        if (isLoading) {
+          return <Loading />
+        } else if (posts.length === 0) {
+          return <EmptyState />
+        }
+
+        return (
+          <ul style={styles}>
+            {posts.map(
+              ({
+                title,
+                body,
+                home_team,
+                away_team,
+                home_score,
+                away_score,
+                image_url,
+              }) => (
+                <Post
+                  title={title}
+                  body={body}
+                  home_team={home_team}
+                  away_team={away_team}
+                  home_score={home_score}
+                  away_score={away_score}
+                  image_url={image_url}
+                />
+              )
+            )}
+          </ul>
+        )
+      }
+
+      const Loading = () => {
+        return (
+          <div>
+            <div style={spinner}></div>
+          </div>
+        )
+      }
+
+      const App = () => {
+        const styles = {
+          fontFamily: 'Times New Roman, sans-serif',
+          backgroundColor: 'rgba(227, 223, 72)',
+          color: 'black',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          margin: 0,
+          padding: 0,
+          minHeight: '100vh',
+        }
+        const divStyle = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          marginTop: '40px',
+        }
+
+        return (
+          <main style={styles}>
+            <Header />
+            <div style={divStyle}>
+              <React.Suspense fallback={<Loading />}>
+                <Posts />
+              </React.Suspense>
+            </div>
+            <Footer />
+          </main>
+        )
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'))
+      root.render(<App />)
+    </script>
+  </body>
+</html>
