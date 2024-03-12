@@ -266,25 +266,31 @@
               )
             }
 
-            const formattedPosts = jsonPosts.map(
-              ({
-                title,
-                content,
-                home_team,
-                away_team,
-                home_score,
-                away_score,
-                image_url,
-              }) => ({
-                title,
-                body: content,
-                home_team,
-                away_team,
-                home_score,
-                away_score,
-                image_url,
-              })
-            )
+            const formattedPosts = jsonPosts
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map(
+                ({
+                  id,
+                  title,
+                  content,
+                  home_team,
+                  away_team,
+                  home_score,
+                  away_score,
+                  image_url,
+                  created_at,
+                }) => ({
+                  id,
+                  title,
+                  body: content,
+                  home_team,
+                  away_team,
+                  home_score,
+                  away_score,
+                  image_url,
+                  created_at,
+                })
+              )
             setPosts(formattedPosts)
           } catch (error) {
             console.error('Failed to fetch posts:', error)
